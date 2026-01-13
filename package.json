@@ -1,0 +1,26 @@
+{
+  "name": "sensai-demand-orchestration",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "homepage": ".",
+  "scripts": {
+    "dev": "vite --port 5175",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy:netlify": "vite build && echo 'Deploy the dist folder to Netlify'",
+    "deploy:vercel": "vite build && echo 'Deploy with: vercel --prod'"
+  },
+  "dependencies": {
+    "lucide-react": "^0.263.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "recharts": "^2.10.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-react": "^4.2.0",
+    "vite": "^7.3.1"
+  }
+}
