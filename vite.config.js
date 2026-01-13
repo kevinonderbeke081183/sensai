@@ -3,8 +3,8 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  // Base path - use './' for relative paths (works on any hosting)
-  base: './',
+  // Base path - use '/' for Vercel/Netlify
+  base: '/',
   server: {
     port: 5175,
     proxy: {
@@ -17,15 +17,5 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: false,
-    // Optimize for production
-    minify: 'terser',
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          charts: ['recharts'],
-        },
-      },
-    },
   },
 })
