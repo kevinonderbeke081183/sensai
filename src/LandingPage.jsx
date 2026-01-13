@@ -10,10 +10,18 @@ import {
 // Landing Page for Lead Generation
 // ============================================
 
+// FORMSPREE CONFIGURATION
+// 1. Go to https://formspree.io and create a free account
+// 2. Create a new form and copy your form ID (e.g., "xyzabcde")
+// 3. Replace 'YOUR_FORMSPREE_ID' below with your actual form ID
+const FORMSPREE_ID = 'YOUR_FORMSPREE_ID'; // <-- Replace this!
+
 export default function LandingPage({ onEnterApp }) {
   const [email, setEmail] = useState('');
   const [company, setCompany] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
   const [activeNarrativeStep, setActiveNarrativeStep] = useState(0);
   const [scrollY, setScrollY] = useState(0);
 
@@ -31,12 +39,40 @@ export default function LandingPage({ onEnterApp }) {
     return () => clearInterval(timer);
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (email) {
-      setSubmitted(true);
-      // In production, this would submit to your backend
-      console.log('Waitlist signup:', { email, company });
+    if (!email) return;
+
+    setIsSubmitting(true);
+    setError(null);
+
+    try {
+      // Submit to Formspree
+      const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          email,
+          company: company || 'Not provided',
+          source: 'SensAI Landing Page',
+          timestamp: new Date().toISOString()
+        })
+      });
+
+      if (response.ok) {
+        setSubmitted(true);
+      } else {
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to submit');
+      }
+    } catch (err) {
+      console.error('Waitlist signup error:', err);
+      setError('Something went wrong. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -899,21 +935,30 @@ export default function LandingPage({ onEnterApp }) {
 
               <button
                 type="submit"
+                disabled={isSubmitting}
                 style={{
                   padding: '18px 32px',
-                  background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                  background: isSubmitting
+                    ? 'rgba(16, 185, 129, 0.5)'
+                    : 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
                   border: 'none',
                   borderRadius: 12,
                   color: '#fff',
                   fontSize: 18,
                   fontWeight: 700,
-                  cursor: 'pointer',
+                  cursor: isSubmitting ? 'not-allowed' : 'pointer',
                   transition: 'all 0.3s ease',
-                  boxShadow: '0 4px 20px rgba(16, 185, 129, 0.4)'
+                  boxShadow: isSubmitting ? 'none' : '0 4px 20px rgba(16, 185, 129, 0.4)'
                 }}
               >
-                Request Early Access
+                {isSubmitting ? 'Submitting...' : 'Request Early Access'}
               </button>
+
+              {error && (
+                <p style={{ fontSize: 14, color: '#ef4444', marginTop: 12 }}>
+                  {error}
+                </p>
+              )}
 
               <p style={{ fontSize: 13, color: '#64748b', marginTop: 8 }}>
                 No spam. We'll notify you when we're ready to onboard.
