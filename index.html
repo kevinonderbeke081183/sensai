@@ -83,6 +83,13 @@
     </style>
   </head>
   <body>
+    <!-- Hidden form for Netlify Forms detection (required for JS form submissions) -->
+    <form name="sensai-waitlist" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="bot-field" />
+      <input type="email" name="email" />
+      <input type="text" name="company" />
+    </form>
+
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

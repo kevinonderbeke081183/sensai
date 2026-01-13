@@ -10,11 +10,8 @@ import {
 // Landing Page for Lead Generation
 // ============================================
 
-// FORMSPREE CONFIGURATION
-// 1. Go to https://formspree.io and create a free account
-// 2. Create a new form and copy your form ID (e.g., "xyzabcde")
-// 3. Replace 'YOUR_FORMSPREE_ID' below with your actual form ID
-const FORMSPREE_ID = 'YOUR_FORMSPREE_ID'; // <-- Replace this!
+// Using Netlify Forms - submissions appear in your Netlify dashboard
+// Go to: Netlify Dashboard > Your Site > Forms > sensai-waitlist
 
 export default function LandingPage({ onEnterApp }) {
   const [email, setEmail] = useState('');
@@ -47,26 +44,22 @@ export default function LandingPage({ onEnterApp }) {
     setError(null);
 
     try {
-      // Submit to Formspree
-      const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+      // Submit to Netlify Forms
+      const formData = new FormData();
+      formData.append('form-name', 'sensai-waitlist');
+      formData.append('email', email);
+      formData.append('company', company || 'Not provided');
+
+      const response = await fetch('/', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          email,
-          company: company || 'Not provided',
-          source: 'SensAI Landing Page',
-          timestamp: new Date().toISOString()
-        })
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData).toString()
       });
 
       if (response.ok) {
         setSubmitted(true);
       } else {
-        const data = await response.json();
-        throw new Error(data.error || 'Failed to submit');
+        throw new Error('Failed to submit');
       }
     } catch (err) {
       console.error('Waitlist signup error:', err);
