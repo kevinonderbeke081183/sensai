@@ -661,7 +661,7 @@ export default function LandingPage({ onEnterApp }) {
                             textAlign: 'center'
                           }}>
                             <div style={{ fontSize: 12, color: '#94a3b8' }}>Campaign Cost</div>
-                            <div style={{ fontSize: 20, fontWeight: 700, color: '#f59e0b' }}>€280</div>
+                            <div style={{ fontSize: 20, fontWeight: 700, color: '#f59e0b' }}>€3,280</div>
                           </div>
                           <div style={{
                             flex: 1,
