@@ -81,22 +81,22 @@ export default function LandingPage({ onEnterApp }) {
       title: "The Old Way",
       icon: DollarSign,
       color: "#f59e0b",
-      content: "Call retailers, offer 50% discount, hope they take it. You lose margin AND damage your brand with constant discounting.",
+      content: "Connect with retailers, offer 50% discount, hope they take it. You lose margin AND damage your brand with constant discounting.",
       highlight: "Brand damage + Lost margin"
     },
     {
       title: "The SensAI Way",
       icon: Target,
       color: "#10b981",
-      content: "Platform detects risk 28 days out. Recommends 5 fitness micro-influencers. Budget: €280. Clear inventory at 70% margin.",
-      highlight: "63x ROI"
+      content: "Platform detects risk 28 days out. Recommends 5 fitness micro-influencers. Budget: €280. Clear inventory at 50% margin.",
+      highlight: "3x ROI"
     },
     {
       title: "Amplification",
       icon: TrendingUp,
       color: "#3b82f6",
-      content: "Protein Ice Cream trend surging +127%. You have Casein Powder. Launch recipe challenge. Ride the trend at full price.",
-      highlight: "5.2x ROI on trend"
+      content: "Protein Ice Cream trend surging +27%. You have Casein Powder. Launch recipe challenge. Ride the trend at full price.",
+      highlight: "2.2x ROI on trend"
     },
     {
       title: "Closed Loop",
@@ -266,7 +266,7 @@ export default function LandingPage({ onEnterApp }) {
             background: 'linear-gradient(135deg, #ef4444 0%, #f59e0b 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent'
-          }}>Expiring Inventory</span> Into{' '}
+          }}>Inventory</span> Into{' '}
           <span style={{
             background: 'linear-gradient(135deg, #10b981 0%, #3b82f6 100%)',
             WebkitBackgroundClip: 'text',
@@ -283,8 +283,8 @@ export default function LandingPage({ onEnterApp }) {
           marginBottom: 40,
           animation: 'slideUp 1s ease 0.2s both'
         }}>
-          The first platform that connects <strong style={{ color: '#fff' }}>supply chain data</strong> with{' '}
-          <strong style={{ color: '#fff' }}>influencer marketing</strong> to orchestrate demand in real-time.
+          The service that connects <strong style={{ color: '#fff' }}>supply chain data</strong> with{' '}
+          <strong style={{ color: '#fff' }}>influencer marketing</strong> to guide demand in real-time.
           No more write-offs. No more brand-damaging discounts.
         </p>
 
