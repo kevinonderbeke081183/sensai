@@ -342,9 +342,9 @@ export default function LandingPage({ onEnterApp }) {
           animation: 'slideUp 1s ease 0.6s both'
         }}>
           {[
-            { value: '63x', label: 'Average ROI' },
-            { value: '€17,640', label: 'Saved per campaign' },
-            { value: '28 days', label: 'Early detection' }
+            { value: '3x', label: 'Average ROI' },
+            { value: '€7,640', label: 'Saved per campaign' },
+            { value: '18 days', label: 'Early detection' }
           ].map((stat, i) => (
             <div key={i} style={{ textAlign: 'center' }}>
               <div style={{
@@ -406,7 +406,7 @@ export default function LandingPage({ onEnterApp }) {
               letterSpacing: '-1px',
               marginBottom: 20
             }}>
-              CPG Companies Lose Billions to<br />
+              CPG Companies Lose Millions to<br />
               <span style={{ color: '#ef4444' }}>Inventory Write-offs</span>
             </h2>
             <p style={{ fontSize: 18, color: '#94a3b8', maxWidth: 600, margin: '0 auto' }}>
