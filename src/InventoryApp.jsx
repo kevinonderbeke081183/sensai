@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Package, TrendingUp, AlertTriangle, Check, Users, Target, Zap, Calendar, DollarSign, ArrowRight, ChevronDown, ChevronUp } from 'lucide-react';
+import { Package, TrendingUp, AlertTriangle, Check, Users, Target, Zap, Calendar, DollarSign, ArrowRight, ChevronDown, ChevronUp, Home } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { products } from './data/products';
 import { influencers } from './data/influencers';
@@ -46,7 +46,7 @@ const theme = {
 // INVENTORY-FIRST SENSAI PROTOTYPE
 // =============================================================================
 
-export default function InventoryApp() {
+export default function InventoryApp({ onBackToLanding }) {
   const [selectedCategory, setSelectedCategory] = useState('ALL');
   const [selectedProduct, setSelectedProduct] = useState(null);
 
@@ -106,6 +106,37 @@ export default function InventoryApp() {
       }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            {onBackToLanding && (
+              <button
+                onClick={onBackToLanding}
+                style={{
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: '10px',
+                  background: 'rgba(255,255,255,0.05)',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  color: theme.text.secondary,
+                  transition: 'all 0.2s ease',
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)';
+                  e.currentTarget.style.color = theme.text.primary;
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)';
+                  e.currentTarget.style.color = theme.text.secondary;
+                }}
+                title="Back to Landing Page"
+              >
+                <Home size={18} />
+              </button>
+            )}
             <div style={{
               width: '48px',
               height: '48px',
