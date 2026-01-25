@@ -46,6 +46,10 @@ export default function InventoryApp() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+      {/* PROTOTYPE INDICATOR */}
+      <div className="bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3 px-6 text-center font-bold text-lg shadow-lg">
+        🎯 PROTOTYPE 2: INVENTORY-FIRST APPROACH 📦
+      </div>
       {/* Header */}
       <header className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 py-4">
