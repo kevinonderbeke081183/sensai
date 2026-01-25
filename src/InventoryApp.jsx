@@ -1,15 +1,49 @@
 import React, { useState, useMemo } from 'react';
-import { BarChart3, Package, TrendingUp, TrendingDown, AlertTriangle, Check, Clock, Users, Target, Zap, Calendar, DollarSign, ArrowRight } from 'lucide-react';
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import { Package, TrendingUp, AlertTriangle, Check, Users, Target, Zap, Calendar, DollarSign, ArrowRight, ChevronDown, ChevronUp } from 'lucide-react';
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { products } from './data/products';
 import { influencers } from './data/influencers';
 import { events } from './data/events';
 
 // =============================================================================
-// INVENTORY-FIRST SENSAI PROTOTYPE
+// THEME - Matching Prototype 1's Visual Style
 // =============================================================================
-// This prototype starts with INVENTORY and recommends campaigns to move SKUs
-// Flow: Inventory Status → Action Needed → Campaign Recommendations
+
+const theme = {
+  bg: {
+    primary: '#0a0a0f',
+    secondary: '#12121a',
+    card: 'rgba(255,255,255,0.02)',
+    elevated: 'rgba(255,255,255,0.04)',
+  },
+  border: {
+    default: 'rgba(255,255,255,0.08)',
+    hover: 'rgba(255,255,255,0.15)',
+  },
+  text: {
+    primary: '#ffffff',
+    secondary: '#a0a0a0',
+    muted: '#666666'
+  },
+  accent: {
+    blue: '#3b82f6',
+    green: '#10b981',
+    amber: '#fbbf24',
+    red: '#ef4444',
+    purple: '#8b5cf6',
+    emerald: '#059669',
+  },
+  gradient: {
+    green: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+    red: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+    amber: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
+    blue: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+    purple: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
+  }
+};
+
+// =============================================================================
+// INVENTORY-FIRST SENSAI PROTOTYPE
 // =============================================================================
 
 export default function InventoryApp() {
@@ -18,9 +52,9 @@ export default function InventoryApp() {
 
   // Categorize inventory by action needed
   const inventoryCategories = useMemo(() => {
-    const critical = []; // Needs liquidation
-    const amplify = [];  // Opportunity to push
-    const stable = [];   // Healthy, no action needed
+    const critical = [];
+    const amplify = [];
+    const stable = [];
 
     products.forEach(product => {
       const analysis = analyzeInventoryStatus(product);
@@ -45,58 +79,89 @@ export default function InventoryApp() {
   }, [selectedCategory, inventoryCategories]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div style={{
+      minHeight: '100vh',
+      background: theme.bg.primary,
+      color: theme.text.primary,
+      fontFamily: "'Inter', -apple-system, sans-serif",
+    }}>
       {/* PROTOTYPE INDICATOR */}
-      <div className="bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3 px-6 text-center font-bold text-lg shadow-lg">
+      <div style={{
+        background: theme.gradient.green,
+        color: '#fff',
+        padding: '12px 24px',
+        textAlign: 'center',
+        fontWeight: 'bold',
+        fontSize: '16px',
+        boxShadow: '0 4px 6px rgba(0,0,0,0.3)',
+      }}>
         🎯 PROTOTYPE 2: INVENTORY-FIRST APPROACH 📦
       </div>
+
       {/* Header */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
+      <div style={{
+        background: theme.bg.secondary,
+        borderBottom: `1px solid ${theme.border.default}`,
+        padding: '24px',
+      }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <div style={{
+              width: '48px',
+              height: '48px',
+              borderRadius: '12px',
+              background: theme.gradient.green,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              <Package size={24} color="#fff" />
+            </div>
             <div>
-              <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
-                <Package className="w-7 h-7 text-indigo-600" />
+              <h1 style={{ fontSize: '24px', fontWeight: '700', margin: 0 }}>
                 SensAI Inventory Command
               </h1>
-              <p className="text-sm text-slate-600 mt-1">
+              <p style={{ color: theme.text.secondary, fontSize: '14px', margin: '4px 0 0 0' }}>
                 Inventory-first campaign intelligence
               </p>
             </div>
-            <div className="text-right">
-              <div className="text-xs text-slate-500">Total SKUs</div>
-              <div className="text-2xl font-bold text-slate-900">{products.length}</div>
-            </div>
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            <div style={{ fontSize: '12px', color: theme.text.muted }}>Total SKUs</div>
+            <div style={{ fontSize: '28px', fontWeight: 'bold', color: theme.text.primary }}>{products.length}</div>
           </div>
         </div>
-      </header>
+      </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '32px 24px' }}>
         {/* Inventory Status Overview */}
-        <div className="grid grid-cols-3 gap-6 mb-8">
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px', marginBottom: '32px' }}>
           <InventoryStatusCard
-            title="🔴 Critical"
+            title="Critical"
             subtitle="Needs Liquidation"
+            emoji="🔴"
             count={inventoryCategories.critical.length}
-            color="red"
+            gradient={theme.gradient.red}
             isSelected={selectedCategory === 'CRITICAL'}
             onClick={() => setSelectedCategory('CRITICAL')}
             totalValue={calculateTotalValue(inventoryCategories.critical)}
           />
           <InventoryStatusCard
-            title="🟡 Amplify"
+            title="Amplify"
             subtitle="Push Opportunity"
+            emoji="🟡"
             count={inventoryCategories.amplify.length}
-            color="amber"
+            gradient={theme.gradient.amber}
             isSelected={selectedCategory === 'AMPLIFY'}
             onClick={() => setSelectedCategory('AMPLIFY')}
             totalValue={calculateTotalValue(inventoryCategories.amplify)}
           />
           <InventoryStatusCard
-            title="🟢 Stable"
+            title="Stable"
             subtitle="Healthy Stock"
+            emoji="🟢"
             count={inventoryCategories.stable.length}
-            color="green"
+            gradient={theme.gradient.green}
             isSelected={selectedCategory === 'STABLE'}
             onClick={() => setSelectedCategory('STABLE')}
             totalValue={calculateTotalValue(inventoryCategories.stable)}
@@ -104,7 +169,7 @@ export default function InventoryApp() {
         </div>
 
         {/* Inventory Grid */}
-        <div className="grid grid-cols-1 gap-6">
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '16px' }}>
           {currentInventory.map(product => (
             <InventoryProductCard
               key={product.id}
@@ -128,6 +193,565 @@ export default function InventoryApp() {
 }
 
 // =============================================================================
+// COMPONENTS
+// =============================================================================
+
+function InventoryStatusCard({ title, subtitle, emoji, count, gradient, isSelected, onClick, totalValue }) {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <div
+      onClick={onClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        background: isSelected ? theme.bg.elevated : theme.bg.card,
+        border: `2px solid ${isSelected ? theme.accent.green : theme.border.default}`,
+        borderRadius: '16px',
+        padding: '24px',
+        cursor: 'pointer',
+        transition: 'all 0.2s ease',
+        transform: isHovered ? 'translateY(-4px)' : 'translateY(0)',
+        boxShadow: isHovered ? '0 12px 24px rgba(0,0,0,0.3)' : '0 4px 8px rgba(0,0,0,0.2)',
+      }}
+    >
+      <div style={{
+        width: '48px',
+        height: '48px',
+        borderRadius: '12px',
+        background: gradient,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: '24px',
+        marginBottom: '16px',
+      }}>
+        {emoji}
+      </div>
+      <div style={{ fontSize: '18px', fontWeight: '700', color: theme.text.primary, marginBottom: '4px' }}>
+        {title}
+      </div>
+      <div style={{ fontSize: '13px', color: theme.text.secondary, marginBottom: '16px' }}>
+        {subtitle}
+      </div>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+        <div style={{ fontSize: '36px', fontWeight: '700', color: theme.text.primary }}>{count}</div>
+        <div style={{ fontSize: '14px', color: theme.text.muted }}>SKUs</div>
+      </div>
+      <div style={{ marginTop: '12px', fontSize: '12px', color: theme.text.muted }}>
+        €{Math.round(totalValue).toLocaleString()} inventory value
+      </div>
+    </div>
+  );
+}
+
+function InventoryProductCard({ product, onClick, isSelected }) {
+  const [isHovered, setIsHovered] = useState(false);
+  const analysis = product.analysis;
+  const inv = product.inventory;
+
+  const actionGradients = {
+    LIQUIDATE: theme.gradient.red,
+    AMPLIFY: theme.gradient.amber,
+    STABLE: theme.gradient.green,
+  };
+
+  const actionIcons = {
+    LIQUIDATE: <AlertTriangle size={20} color="#fff" />,
+    AMPLIFY: <TrendingUp size={20} color="#fff" />,
+    STABLE: <Check size={20} color="#fff" />,
+  };
+
+  return (
+    <div
+      onClick={onClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        background: isSelected ? theme.bg.elevated : theme.bg.card,
+        border: `2px solid ${isSelected ? theme.accent.purple : theme.border.default}`,
+        borderRadius: '16px',
+        padding: '24px',
+        cursor: 'pointer',
+        transition: 'all 0.2s ease',
+        transform: isHovered || isSelected ? 'translateY(-2px)' : 'translateY(0)',
+        boxShadow: isHovered || isSelected ? '0 12px 32px rgba(0,0,0,0.4)' : '0 4px 8px rgba(0,0,0,0.2)',
+      }}
+    >
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        {/* Left: Product Info */}
+        <div style={{ flex: 1 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+            <div style={{
+              width: '40px',
+              height: '40px',
+              borderRadius: '10px',
+              background: actionGradients[analysis.action],
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              {actionIcons[analysis.action]}
+            </div>
+            <div>
+              <h3 style={{ fontSize: '18px', fontWeight: '700', margin: 0, color: theme.text.primary }}>
+                {product.name}
+              </h3>
+              <div style={{ fontSize: '12px', color: theme.text.muted, marginTop: '2px' }}>{product.sku}</div>
+            </div>
+          </div>
+
+          {/* Inventory Stats Grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginTop: '20px' }}>
+            <StatBox
+              label="On Hand"
+              value={inv.totalOnHand.toLocaleString()}
+              unit="units"
+              highlight={false}
+            />
+            <StatBox
+              label="Days of Supply"
+              value={inv.daysOfSupply}
+              unit="days"
+              highlight={inv.daysOfSupply > 60}
+              highlightColor={theme.accent.red}
+            />
+            <StatBox
+              label="Shelf Life"
+              value={product.shelfLifeRemaining}
+              unit="days left"
+              highlight={product.shelfLifeRemaining < 90}
+              highlightColor={theme.accent.red}
+            />
+            <StatBox
+              label="Bet Quality"
+              value={product.betQuality}
+              unit=""
+              highlight={product.betQuality === 'BAD'}
+              highlightColor={product.betQuality === 'GOOD' ? theme.accent.green : product.betQuality === 'BAD' ? theme.accent.red : theme.accent.amber}
+            />
+          </div>
+
+          {/* Analysis */}
+          <div style={{
+            marginTop: '20px',
+            padding: '16px',
+            background: theme.bg.elevated,
+            border: `1px solid ${theme.border.default}`,
+            borderRadius: '12px',
+          }}>
+            <div style={{ fontSize: '11px', fontWeight: '600', color: theme.text.muted, marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              Action Required
+            </div>
+            <div style={{ fontSize: '16px', fontWeight: '700', color: theme.text.primary, marginBottom: '12px' }}>
+              {analysis.action}
+            </div>
+            <div style={{ fontSize: '13px', color: theme.text.secondary }}>
+              {analysis.reasons.map((reason, idx) => (
+                <div key={idx} style={{ marginBottom: '4px' }}>• {reason}</div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Right: Budget & CTA */}
+        <div style={{ marginLeft: '32px', textAlign: 'right', minWidth: '200px' }}>
+          <div style={{ fontSize: '11px', color: theme.text.muted, marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+            Recommended Budget
+          </div>
+          <div style={{ fontSize: '32px', fontWeight: '700', color: theme.accent.green, marginBottom: '8px' }}>
+            €{Math.round(analysis.recommendedCampaignBudget).toLocaleString()}
+          </div>
+          {analysis.projectedRevenueLoss > 0 && (
+            <div style={{ fontSize: '12px', color: theme.accent.red, marginBottom: '20px' }}>
+              €{Math.round(analysis.projectedRevenueLoss).toLocaleString()} at risk
+            </div>
+          )}
+          <button
+            style={{
+              padding: '12px 24px',
+              background: theme.gradient.purple,
+              border: 'none',
+              borderRadius: '10px',
+              color: '#fff',
+              fontSize: '14px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              transition: 'transform 0.2s ease',
+              transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+            }}
+          >
+            View Campaigns
+            <ArrowRight size={16} />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function StatBox({ label, value, unit, highlight, highlightColor }) {
+  return (
+    <div>
+      <div style={{ fontSize: '11px', color: theme.text.muted, marginBottom: '4px' }}>{label}</div>
+      <div style={{
+        fontSize: '20px',
+        fontWeight: '700',
+        color: highlight ? highlightColor : theme.text.primary,
+      }}>
+        {value}
+      </div>
+      {unit && <div style={{ fontSize: '11px', color: theme.text.muted }}>{unit}</div>}
+    </div>
+  );
+}
+
+function CampaignRecommendationsModal({ product, onClose }) {
+  const campaigns = useMemo(() => generateCampaignsForProduct(product), [product]);
+
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        inset: 0,
+        background: 'rgba(0,0,0,0.8)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 1000,
+        padding: '24px',
+        backdropFilter: 'blur(8px)',
+      }}
+      onClick={onClose}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          background: theme.bg.secondary,
+          borderRadius: '20px',
+          boxShadow: '0 25px 50px rgba(0,0,0,0.5)',
+          maxWidth: '1200px',
+          width: '100%',
+          maxHeight: '90vh',
+          overflow: 'hidden',
+          border: `1px solid ${theme.border.default}`,
+        }}
+      >
+        {/* Header */}
+        <div style={{
+          background: theme.gradient.purple,
+          color: '#fff',
+          padding: '32px',
+        }}>
+          <h2 style={{ fontSize: '28px', fontWeight: '700', margin: '0 0 8px 0' }}>Campaign Recommendations</h2>
+          <p style={{ fontSize: '14px', opacity: 0.9, margin: 0 }}>{product.name} • {product.sku}</p>
+        </div>
+
+        {/* Content */}
+        <div style={{ padding: '32px', overflowY: 'auto', maxHeight: 'calc(90vh - 220px)' }}>
+          {/* Product Status Summary */}
+          <div style={{
+            background: theme.bg.card,
+            border: `1px solid ${theme.border.default}`,
+            borderRadius: '16px',
+            padding: '24px',
+            marginBottom: '24px',
+          }}>
+            <h3 style={{ fontSize: '18px', fontWeight: '700', marginBottom: '20px', color: theme.text.primary }}>
+              Inventory Status
+            </h3>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
+              <StatBox label="Action Needed" value={product.analysis.action} unit="" highlight={false} />
+              <StatBox label="Urgency Score" value={`${product.analysis.urgencyScore}/100`} unit="" highlight={false} />
+              <StatBox label="Budget Recommended" value={`€${Math.round(product.analysis.recommendedCampaignBudget).toLocaleString()}`} unit="" highlight={false} highlightColor={theme.accent.green} />
+              <StatBox label="Days of Supply" value={product.inventory.daysOfSupply} unit="" highlight={false} />
+            </div>
+          </div>
+
+          {/* Campaign Recommendations */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '16px' }}>
+            {campaigns.map((campaign, idx) => (
+              <CampaignCard key={idx} campaign={campaign} product={product} />
+            ))}
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div style={{
+          borderTop: `1px solid ${theme.border.default}`,
+          padding: '24px 32px',
+          display: 'flex',
+          justifyContent: 'flex-end',
+          gap: '12px',
+          background: theme.bg.card,
+        }}>
+          <button
+            onClick={onClose}
+            style={{
+              padding: '12px 24px',
+              background: theme.bg.elevated,
+              border: `1px solid ${theme.border.default}`,
+              borderRadius: '10px',
+              color: theme.text.primary,
+              fontSize: '14px',
+              fontWeight: '600',
+              cursor: 'pointer',
+            }}
+          >
+            Close
+          </button>
+          <button
+            style={{
+              padding: '12px 24px',
+              background: theme.gradient.purple,
+              border: 'none',
+              borderRadius: '10px',
+              color: '#fff',
+              fontSize: '14px',
+              fontWeight: '600',
+              cursor: 'pointer',
+            }}
+          >
+            Launch Selected Campaigns
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CampaignCard({ campaign, product }) {
+  const [expanded, setExpanded] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const typeGradients = {
+    INFLUENCER: theme.gradient.purple,
+    GOOGLE_ADS: theme.gradient.blue,
+    HYBRID: theme.gradient.green,
+  };
+
+  const typeIcons = {
+    INFLUENCER: <Users size={20} color="#fff" />,
+    GOOGLE_ADS: <Target size={20} color="#fff" />,
+    HYBRID: <Zap size={20} color="#fff" />,
+  };
+
+  return (
+    <div
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        background: theme.bg.card,
+        border: `2px solid ${theme.border.default}`,
+        borderRadius: '16px',
+        overflow: 'hidden',
+        transition: 'all 0.2s ease',
+        transform: isHovered ? 'translateY(-2px)' : 'translateY(0)',
+        boxShadow: isHovered ? '0 12px 24px rgba(0,0,0,0.3)' : '0 4px 8px rgba(0,0,0,0.2)',
+      }}
+    >
+      {/* Campaign Header */}
+      <div
+        onClick={() => setExpanded(!expanded)}
+        style={{
+          padding: '24px',
+          cursor: 'pointer',
+        }}
+      >
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <div style={{ flex: 1 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+              <div style={{
+                width: '40px',
+                height: '40px',
+                borderRadius: '10px',
+                background: typeGradients[campaign.type],
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+                {typeIcons[campaign.type]}
+              </div>
+              <div>
+                <h4 style={{ fontSize: '18px', fontWeight: '700', margin: 0, color: theme.text.primary }}>
+                  {campaign.name}
+                </h4>
+                <p style={{ fontSize: '13px', color: theme.text.secondary, margin: '4px 0 0 0' }}>
+                  {campaign.description}
+                </p>
+              </div>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '16px', marginTop: '20px' }}>
+              <StatBox label="Budget" value={`€${campaign.budget.toLocaleString()}`} unit="" highlight={false} />
+              <StatBox label="Expected ROI" value={`${campaign.expectedROI}x`} unit="" highlight={false} highlightColor={theme.accent.green} />
+              <StatBox label="Reach" value={campaign.reach >= 1000 ? `${Math.round(campaign.reach / 1000)}k` : campaign.reach} unit="" highlight={false} />
+              <StatBox label="Duration" value={campaign.duration} unit="days" highlight={false} />
+              <StatBox label="Units to Move" value={campaign.unitsToMove.toLocaleString()} unit="" highlight={false} highlightColor={theme.accent.purple} />
+            </div>
+          </div>
+
+          <div style={{ marginLeft: '24px', display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'flex-end' }}>
+            <button
+              style={{
+                padding: '10px 20px',
+                background: theme.gradient.purple,
+                border: 'none',
+                borderRadius: '8px',
+                color: '#fff',
+                fontSize: '13px',
+                fontWeight: '600',
+                cursor: 'pointer',
+              }}
+            >
+              Select
+            </button>
+            <div style={{ fontSize: '12px', color: theme.text.muted }}>
+              {expanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Expanded Details */}
+      {expanded && (
+        <div style={{
+          padding: '0 24px 24px 24px',
+          borderTop: `1px solid ${theme.border.default}`,
+          paddingTop: '24px',
+        }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px' }}>
+            {/* Influencers or Ad Strategy */}
+            {campaign.influencers && (
+              <div>
+                <h5 style={{ fontSize: '14px', fontWeight: '700', color: theme.text.primary, marginBottom: '12px' }}>
+                  Selected Influencers ({campaign.influencers.length})
+                </h5>
+                <div style={{ display: 'grid', gap: '8px' }}>
+                  {campaign.influencers.slice(0, 5).map(inf => (
+                    <div key={inf.id} style={{
+                      background: theme.bg.elevated,
+                      padding: '12px',
+                      borderRadius: '8px',
+                      border: `1px solid ${theme.border.default}`,
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}>
+                      <div>
+                        <div style={{ fontSize: '13px', fontWeight: '600', color: theme.text.primary }}>{inf.handle}</div>
+                        <div style={{ fontSize: '11px', color: theme.text.muted }}>
+                          {inf.followers.toLocaleString()} followers • {(inf.engagement * 100).toFixed(1)}% eng
+                        </div>
+                      </div>
+                      <div style={{ fontSize: '13px', fontWeight: '700', color: theme.text.primary }}>€{inf.cost}</div>
+                    </div>
+                  ))}
+                  {campaign.influencers.length > 5 && (
+                    <div style={{ fontSize: '11px', color: theme.text.muted, textAlign: 'center', marginTop: '8px' }}>
+                      + {campaign.influencers.length - 5} more influencers
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {campaign.adStrategy && (
+              <div>
+                <h5 style={{ fontSize: '14px', fontWeight: '700', color: theme.text.primary, marginBottom: '12px' }}>
+                  Google Ads Strategy
+                </h5>
+                <div style={{ display: 'grid', gap: '8px' }}>
+                  <InfoBox label="Campaign Type" value={campaign.adStrategy.type} />
+                  <InfoBox label="Target Keywords" value={campaign.adStrategy.keywords.join(', ')} />
+                  <InfoBox label="Daily Budget" value={`€${campaign.adStrategy.dailyBudget}`} />
+                </div>
+              </div>
+            )}
+
+            {/* Timeline */}
+            <div>
+              <h5 style={{ fontSize: '14px', fontWeight: '700', color: theme.text.primary, marginBottom: '12px' }}>
+                Campaign Timeline
+              </h5>
+              <div style={{ display: 'grid', gap: '8px' }}>
+                {campaign.timeline.map((phase, idx) => (
+                  <div key={idx} style={{
+                    background: theme.bg.elevated,
+                    padding: '12px',
+                    borderRadius: '8px',
+                    border: `1px solid ${theme.border.default}`,
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div>
+                        <div style={{ fontSize: '13px', fontWeight: '600', color: theme.text.primary }}>{phase.name}</div>
+                        <div style={{ fontSize: '11px', color: theme.text.muted, marginTop: '2px' }}>{phase.description}</div>
+                      </div>
+                      <div style={{ fontSize: '11px', color: theme.text.muted }}>{phase.duration}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Messaging Strategy */}
+          {campaign.messaging && (
+            <div style={{ marginTop: '24px' }}>
+              <h5 style={{ fontSize: '14px', fontWeight: '700', color: theme.text.primary, marginBottom: '12px' }}>
+                Messaging Strategy
+              </h5>
+              <div style={{
+                background: theme.bg.elevated,
+                padding: '16px',
+                borderRadius: '8px',
+                border: `1px solid ${theme.border.default}`,
+              }}>
+                <p style={{ fontSize: '13px', color: theme.text.secondary, fontStyle: 'italic', margin: '0 0 12px 0' }}>
+                  "{campaign.messaging.angle}"
+                </p>
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                  {campaign.messaging.hooks.map((hook, idx) => (
+                    <span key={idx} style={{
+                      padding: '4px 12px',
+                      background: 'rgba(139, 92, 246, 0.2)',
+                      border: '1px solid rgba(139, 92, 246, 0.3)',
+                      borderRadius: '6px',
+                      fontSize: '11px',
+                      color: theme.accent.purple,
+                      fontWeight: '600',
+                    }}>
+                      {hook}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function InfoBox({ label, value }) {
+  return (
+    <div style={{
+      background: theme.bg.elevated,
+      padding: '12px',
+      borderRadius: '8px',
+      border: `1px solid ${theme.border.default}`,
+    }}>
+      <div style={{ fontSize: '11px', color: theme.text.muted, marginBottom: '4px' }}>{label}</div>
+      <div style={{ fontSize: '13px', fontWeight: '600', color: theme.text.primary }}>{value}</div>
+    </div>
+  );
+}
+
+// =============================================================================
 // INVENTORY ANALYSIS ENGINE
 // =============================================================================
 
@@ -141,7 +765,6 @@ function analyzeInventoryStatus(product) {
   let urgencyScore = 0;
   let recommendedCampaignBudget = 0;
 
-  // Check for liquidation triggers
   if (betQuality === 'BAD') {
     reasons.push('Poor inventory bet');
     urgencyScore += 40;
@@ -157,14 +780,12 @@ function analyzeInventoryStatus(product) {
     urgencyScore += 25;
   }
 
-  // Determine action
   if (urgencyScore >= 40) {
     action = 'LIQUIDATE';
     recommendedCampaignBudget = calculateLiquidationBudget(product);
   } else if (betQuality === 'GOOD' && inv.daysOfSupply < 60 && shelfLife > 90) {
-    // Good opportunity to amplify
     const velocity = inv.totalOnHand / inv.daysOfSupply;
-    if (velocity > 50) { // High velocity product
+    if (velocity > 50) {
       action = 'AMPLIFY';
       urgencyScore = 30;
       reasons.push('High-velocity product, amplify demand');
@@ -183,19 +804,15 @@ function analyzeInventoryStatus(product) {
 }
 
 function calculateLiquidationBudget(product) {
-  // Budget should be ~5-10% of inventory value to liquidate
   const inventoryValue = product.inventory.totalOnHand * product.pricing.costPrice;
   return Math.round(inventoryValue * 0.08);
 }
 
 function calculateAmplifyBudget(product) {
-  // Budget based on potential revenue lift
   const dailyRevenue = product.inventory.avgDailyDemand * product.pricing.retailPrice;
-  const campaignDuration = 14; // days
-  const targetLift = 0.35; // 35% lift
+  const campaignDuration = 14;
+  const targetLift = 0.35;
   const expectedRevenueLift = dailyRevenue * campaignDuration * targetLift;
-
-  // Budget at 25% of expected lift revenue
   return Math.round(expectedRevenueLift * 0.25);
 }
 
@@ -205,9 +822,9 @@ function calculateRevenueLoss(product) {
 }
 
 function calculateRecommendedDiscount(product) {
-  if (product.shelfLifeRemaining < 60) return 0.25; // 25% off
-  if (product.shelfLifeRemaining < 90) return 0.20; // 20% off
-  if (product.inventory.daysOfSupply > 60) return 0.15; // 15% off
+  if (product.shelfLifeRemaining < 60) return 0.25;
+  if (product.shelfLifeRemaining < 90) return 0.20;
+  if (product.inventory.daysOfSupply > 60) return 0.15;
   return 0.10;
 }
 
@@ -218,367 +835,7 @@ function calculateTotalValue(products) {
 }
 
 // =============================================================================
-// COMPONENTS
-// =============================================================================
-
-function InventoryStatusCard({ title, subtitle, count, color, isSelected, onClick, totalValue }) {
-  const colorClasses = {
-    red: 'border-red-200 bg-red-50 hover:bg-red-100',
-    amber: 'border-amber-200 bg-amber-50 hover:bg-amber-100',
-    green: 'border-green-200 bg-green-50 hover:bg-green-100',
-  };
-
-  const selectedClasses = {
-    red: 'ring-2 ring-red-500',
-    amber: 'ring-2 ring-amber-500',
-    green: 'ring-2 ring-green-500',
-  };
-
-  return (
-    <button
-      onClick={onClick}
-      className={`
-        border-2 rounded-xl p-6 text-left transition-all
-        ${colorClasses[color]}
-        ${isSelected ? selectedClasses[color] : ''}
-      `}
-    >
-      <div className="text-3xl mb-2">{title.split(' ')[0]}</div>
-      <div className="text-lg font-bold text-slate-900">{title.split(' ')[1]}</div>
-      <div className="text-sm text-slate-600 mb-3">{subtitle}</div>
-      <div className="flex items-baseline gap-2">
-        <div className="text-3xl font-bold text-slate-900">{count}</div>
-        <div className="text-sm text-slate-600">SKUs</div>
-      </div>
-      <div className="text-xs text-slate-500 mt-2">
-        €{Math.round(totalValue).toLocaleString()} inventory value
-      </div>
-    </button>
-  );
-}
-
-function InventoryProductCard({ product, onClick, isSelected }) {
-  const analysis = product.analysis;
-  const inv = product.inventory;
-
-  const actionColors = {
-    LIQUIDATE: 'border-red-300 bg-red-50',
-    AMPLIFY: 'border-amber-300 bg-amber-50',
-    STABLE: 'border-green-300 bg-green-50',
-  };
-
-  const actionIcons = {
-    LIQUIDATE: <AlertTriangle className="w-5 h-5 text-red-600" />,
-    AMPLIFY: <TrendingUp className="w-5 h-5 text-amber-600" />,
-    STABLE: <Check className="w-5 h-5 text-green-600" />,
-  };
-
-  return (
-    <div
-      className={`
-        border-2 rounded-xl p-6 cursor-pointer transition-all
-        ${actionColors[analysis.action]}
-        ${isSelected ? 'ring-4 ring-indigo-500 shadow-lg' : 'hover:shadow-md'}
-      `}
-      onClick={onClick}
-    >
-      <div className="flex items-start justify-between">
-        {/* Product Info */}
-        <div className="flex-1">
-          <div className="flex items-center gap-3 mb-2">
-            {actionIcons[analysis.action]}
-            <div>
-              <h3 className="text-lg font-bold text-slate-900">{product.name}</h3>
-              <div className="text-sm text-slate-600">{product.sku}</div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-4 gap-4 mt-4">
-            {/* Inventory Stats */}
-            <div>
-              <div className="text-xs text-slate-600">On Hand</div>
-              <div className="text-lg font-bold text-slate-900">
-                {inv.totalOnHand.toLocaleString()}
-              </div>
-              <div className="text-xs text-slate-500">units</div>
-            </div>
-            <div>
-              <div className="text-xs text-slate-600">Days of Supply</div>
-              <div className={`text-lg font-bold ${inv.daysOfSupply > 60 ? 'text-red-600' : 'text-slate-900'}`}>
-                {inv.daysOfSupply}
-              </div>
-              <div className="text-xs text-slate-500">days</div>
-            </div>
-            <div>
-              <div className="text-xs text-slate-600">Shelf Life</div>
-              <div className={`text-lg font-bold ${product.shelfLifeRemaining < 90 ? 'text-red-600' : 'text-slate-900'}`}>
-                {product.shelfLifeRemaining}
-              </div>
-              <div className="text-xs text-slate-500">days left</div>
-            </div>
-            <div>
-              <div className="text-xs text-slate-600">Bet Quality</div>
-              <div className={`text-lg font-bold ${
-                product.betQuality === 'GOOD' ? 'text-green-600' :
-                product.betQuality === 'NEUTRAL' ? 'text-amber-600' : 'text-red-600'
-              }`}>
-                {product.betQuality}
-              </div>
-            </div>
-          </div>
-
-          {/* Analysis */}
-          <div className="mt-4 p-3 bg-white rounded-lg border border-slate-200">
-            <div className="text-xs font-semibold text-slate-700 mb-1">Action Required:</div>
-            <div className="text-sm font-bold text-slate-900 mb-2">{analysis.action}</div>
-            <ul className="text-xs text-slate-600 space-y-1">
-              {analysis.reasons.map((reason, idx) => (
-                <li key={idx}>• {reason}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        {/* Quick Stats */}
-        <div className="ml-6 text-right">
-          <div className="text-xs text-slate-600">Recommended Budget</div>
-          <div className="text-2xl font-bold text-indigo-600">
-            €{Math.round(analysis.recommendedCampaignBudget).toLocaleString()}
-          </div>
-          {analysis.projectedRevenueLoss > 0 && (
-            <div className="mt-2 text-xs text-red-600">
-              €{Math.round(analysis.projectedRevenueLoss).toLocaleString()} at risk
-            </div>
-          )}
-          <button className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-semibold hover:bg-indigo-700 transition-colors flex items-center gap-2">
-            View Campaigns
-            <ArrowRight className="w-4 h-4" />
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function CampaignRecommendationsModal({ product, onClose }) {
-  const campaigns = useMemo(() => generateCampaignsForProduct(product), [product]);
-
-  return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-6" onClick={onClose}>
-      <div
-        className="bg-white rounded-2xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Header */}
-        <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-6">
-          <h2 className="text-2xl font-bold mb-2">Campaign Recommendations</h2>
-          <p className="text-indigo-100">{product.name} • {product.sku}</p>
-        </div>
-
-        {/* Content */}
-        <div className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
-          {/* Product Status Summary */}
-          <div className="bg-slate-50 rounded-xl p-6 mb-6 border border-slate-200">
-            <h3 className="text-lg font-bold text-slate-900 mb-4">Inventory Status</h3>
-            <div className="grid grid-cols-4 gap-4">
-              <div>
-                <div className="text-xs text-slate-600">Action Needed</div>
-                <div className="text-xl font-bold text-slate-900">{product.analysis.action}</div>
-              </div>
-              <div>
-                <div className="text-xs text-slate-600">Urgency Score</div>
-                <div className="text-xl font-bold text-slate-900">{product.analysis.urgencyScore}/100</div>
-              </div>
-              <div>
-                <div className="text-xs text-slate-600">Budget Recommended</div>
-                <div className="text-xl font-bold text-indigo-600">
-                  €{Math.round(product.analysis.recommendedCampaignBudget).toLocaleString()}
-                </div>
-              </div>
-              <div>
-                <div className="text-xs text-slate-600">Days of Supply</div>
-                <div className="text-xl font-bold text-slate-900">{product.inventory.daysOfSupply}</div>
-              </div>
-            </div>
-          </div>
-
-          {/* Campaign Recommendations */}
-          <div className="space-y-4">
-            {campaigns.map((campaign, idx) => (
-              <CampaignCard key={idx} campaign={campaign} product={product} />
-            ))}
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div className="border-t border-slate-200 p-6 flex justify-end gap-3">
-          <button
-            onClick={onClose}
-            className="px-6 py-2 border border-slate-300 rounded-lg text-slate-700 font-semibold hover:bg-slate-50 transition-colors"
-          >
-            Close
-          </button>
-          <button className="px-6 py-2 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition-colors">
-            Launch Selected Campaigns
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function CampaignCard({ campaign, product }) {
-  const [expanded, setExpanded] = useState(false);
-
-  return (
-    <div className="border-2 border-slate-200 rounded-xl overflow-hidden hover:shadow-lg transition-all">
-      {/* Campaign Header */}
-      <div
-        className="bg-white p-6 cursor-pointer"
-        onClick={() => setExpanded(!expanded)}
-      >
-        <div className="flex items-start justify-between">
-          <div className="flex-1">
-            <div className="flex items-center gap-3 mb-2">
-              <div className={`p-2 rounded-lg ${
-                campaign.type === 'INFLUENCER' ? 'bg-purple-100' :
-                campaign.type === 'GOOGLE_ADS' ? 'bg-blue-100' :
-                'bg-green-100'
-              }`}>
-                {campaign.type === 'INFLUENCER' ? <Users className="w-5 h-5 text-purple-600" /> :
-                 campaign.type === 'GOOGLE_ADS' ? <Target className="w-5 h-5 text-blue-600" /> :
-                 <Zap className="w-5 h-5 text-green-600" />}
-              </div>
-              <div>
-                <h4 className="text-lg font-bold text-slate-900">{campaign.name}</h4>
-                <p className="text-sm text-slate-600">{campaign.description}</p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-5 gap-4 mt-4">
-              <div>
-                <div className="text-xs text-slate-600">Budget</div>
-                <div className="text-lg font-bold text-slate-900">€{campaign.budget.toLocaleString()}</div>
-              </div>
-              <div>
-                <div className="text-xs text-slate-600">Expected ROI</div>
-                <div className="text-lg font-bold text-green-600">{campaign.expectedROI}x</div>
-              </div>
-              <div>
-                <div className="text-xs text-slate-600">Reach</div>
-                <div className="text-lg font-bold text-slate-900">
-                  {campaign.reach >= 1000 ? `${Math.round(campaign.reach / 1000)}k` : campaign.reach}
-                </div>
-              </div>
-              <div>
-                <div className="text-xs text-slate-600">Duration</div>
-                <div className="text-lg font-bold text-slate-900">{campaign.duration} days</div>
-              </div>
-              <div>
-                <div className="text-xs text-slate-600">Units to Move</div>
-                <div className="text-lg font-bold text-indigo-600">{campaign.unitsToMove.toLocaleString()}</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="ml-4">
-            <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-semibold hover:bg-indigo-700 transition-colors">
-              Select
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Expanded Details */}
-      {expanded && (
-        <div className="bg-slate-50 p-6 border-t border-slate-200">
-          <div className="grid grid-cols-2 gap-6">
-            {/* Influencer List or Ad Strategy */}
-            {campaign.influencers && (
-              <div>
-                <h5 className="text-sm font-bold text-slate-900 mb-3">Selected Influencers ({campaign.influencers.length})</h5>
-                <div className="space-y-2">
-                  {campaign.influencers.slice(0, 5).map(inf => (
-                    <div key={inf.id} className="bg-white p-3 rounded-lg border border-slate-200 flex items-center justify-between">
-                      <div>
-                        <div className="text-sm font-semibold text-slate-900">{inf.handle}</div>
-                        <div className="text-xs text-slate-600">{inf.followers.toLocaleString()} followers • {(inf.engagement * 100).toFixed(1)}% eng</div>
-                      </div>
-                      <div className="text-sm font-bold text-slate-900">€{inf.cost}</div>
-                    </div>
-                  ))}
-                  {campaign.influencers.length > 5 && (
-                    <div className="text-xs text-slate-500 text-center">
-                      + {campaign.influencers.length - 5} more influencers
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {campaign.adStrategy && (
-              <div>
-                <h5 className="text-sm font-bold text-slate-900 mb-3">Google Ads Strategy</h5>
-                <div className="space-y-2">
-                  <div className="bg-white p-3 rounded-lg border border-slate-200">
-                    <div className="text-xs text-slate-600">Campaign Type</div>
-                    <div className="text-sm font-semibold text-slate-900">{campaign.adStrategy.type}</div>
-                  </div>
-                  <div className="bg-white p-3 rounded-lg border border-slate-200">
-                    <div className="text-xs text-slate-600">Target Keywords</div>
-                    <div className="text-sm font-semibold text-slate-900">{campaign.adStrategy.keywords.join(', ')}</div>
-                  </div>
-                  <div className="bg-white p-3 rounded-lg border border-slate-200">
-                    <div className="text-xs text-slate-600">Daily Budget</div>
-                    <div className="text-sm font-semibold text-slate-900">€{campaign.adStrategy.dailyBudget}</div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Timeline */}
-            <div>
-              <h5 className="text-sm font-bold text-slate-900 mb-3">Campaign Timeline</h5>
-              <div className="space-y-2">
-                {campaign.timeline.map((phase, idx) => (
-                  <div key={idx} className="bg-white p-3 rounded-lg border border-slate-200">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <div className="text-sm font-semibold text-slate-900">{phase.name}</div>
-                        <div className="text-xs text-slate-600">{phase.description}</div>
-                      </div>
-                      <div className="text-xs text-slate-500">{phase.duration}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Messaging Strategy */}
-          {campaign.messaging && (
-            <div className="mt-6">
-              <h5 className="text-sm font-bold text-slate-900 mb-3">Messaging Strategy</h5>
-              <div className="bg-white p-4 rounded-lg border border-slate-200">
-                <p className="text-sm text-slate-700 italic">"{campaign.messaging.angle}"</p>
-                <div className="mt-2 flex gap-2 flex-wrap">
-                  {campaign.messaging.hooks.map((hook, idx) => (
-                    <span key={idx} className="px-2 py-1 bg-indigo-100 text-indigo-700 text-xs rounded-full">
-                      {hook}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-    </div>
-  );
-}
-
-// =============================================================================
-// CAMPAIGN GENERATION ENGINE - INVENTORY FIRST
+// CAMPAIGN GENERATION ENGINE
 // =============================================================================
 
 function generateCampaignsForProduct(product) {
@@ -586,15 +843,12 @@ function generateCampaignsForProduct(product) {
   const action = product.analysis.action;
   const budget = product.analysis.recommendedCampaignBudget;
 
-  // 1. INFLUENCER CAMPAIGN
   const influencerCampaign = generateInfluencerCampaign(product, action, budget);
   if (influencerCampaign) campaigns.push(influencerCampaign);
 
-  // 2. GOOGLE ADS CAMPAIGN
   const googleAdsCampaign = generateGoogleAdsCampaign(product, action, budget);
   if (googleAdsCampaign) campaigns.push(googleAdsCampaign);
 
-  // 3. HYBRID CAMPAIGN (Influencer + Google Ads + Trending)
   const hybridCampaign = generateHybridCampaign(product, action, budget);
   if (hybridCampaign) campaigns.push(hybridCampaign);
 
@@ -602,9 +856,7 @@ function generateCampaignsForProduct(product) {
 }
 
 function generateInfluencerCampaign(product, action, budget) {
-  // Match influencers to product category
   const matchedInfluencers = influencers.filter(inf => {
-    // Match by category specialty
     const categoryMatch =
       (product.category === 'protein' && inf.categories.some(c => ['nutrition', 'recipes', 'bodybuilding'].includes(c))) ||
       (product.category === 'preWorkout' && inf.categories.some(c => ['CrossFit', 'functional-fitness', 'competition'].includes(c))) ||
@@ -614,7 +866,6 @@ function generateInfluencerCampaign(product, action, budget) {
     return categoryMatch && inf.contractStatus === 'ACTIVE';
   });
 
-  // Select best influencers by ROI
   const selectedInfluencers = matchedInfluencers
     .sort((a, b) => b.avgROI - a.avgROI)
     .slice(0, Math.min(8, Math.floor(budget / 250)))
@@ -637,7 +888,7 @@ function generateInfluencerCampaign(product, action, budget) {
     description: action === 'LIQUIDATE'
       ? 'Clear excess inventory through targeted influencer partnerships'
       : 'Drive demand with high-engagement influencer content',
-    budget: Math.round(totalCost * 1.15), // Add 15% buffer
+    budget: Math.round(totalCost * 1.15),
     expectedROI: action === 'LIQUIDATE' ? 5.2 : 3.8,
     reach: totalReach,
     duration: action === 'LIQUIDATE' ? 7 : 14,
@@ -664,7 +915,6 @@ function generateInfluencerCampaign(product, action, budget) {
 }
 
 function generateGoogleAdsCampaign(product, action, budget) {
-  // Generate keywords based on product
   const keywords = generateKeywords(product);
   const dailyBudget = Math.round((budget * 0.7) / (action === 'LIQUIDATE' ? 7 : 14));
 
@@ -676,17 +926,13 @@ function generateGoogleAdsCampaign(product, action, budget) {
       : 'Capture high-intent search traffic with optimized campaigns',
     budget: Math.round(budget * 0.7),
     expectedROI: action === 'LIQUIDATE' ? 4.5 : 3.2,
-    reach: Math.round(budget * 50), // Estimated impressions
+    reach: Math.round(budget * 50),
     duration: action === 'LIQUIDATE' ? 7 : 14,
     unitsToMove: Math.round(product.inventory.avgDailyDemand * 0.3 * (action === 'LIQUIDATE' ? 7 : 14)),
     adStrategy: {
       type: action === 'LIQUIDATE' ? 'Shopping + Search (Aggressive)' : 'Search + Display',
       keywords: keywords,
       dailyBudget: dailyBudget,
-      targetCPA: Math.round(product.pricing.retailPrice * 0.15),
-      adCopy: action === 'LIQUIDATE'
-        ? `${product.shortName} - Limited Time Offer | Up to ${Math.round(product.analysis.recommendedDiscount * 100)}% Off`
-        : `Premium ${product.shortName} | Fast Shipping | Trusted Brand`,
     },
     timeline: [
       { name: 'Setup', description: 'Campaign creation & approval', duration: 'Day 1' },
@@ -705,13 +951,8 @@ function generateGoogleAdsCampaign(product, action, budget) {
 }
 
 function generateHybridCampaign(product, action, budget) {
-  // Find relevant trends
   const relevantTrends = findRelevantTrends(product);
   const trendName = relevantTrends[0] || 'fitness trends';
-
-  // Split budget: 60% influencers, 40% Google Ads
-  const influencerBudget = Math.round(budget * 0.6);
-  const adsBudget = Math.round(budget * 0.4);
 
   return {
     type: 'HYBRID',
@@ -736,7 +977,7 @@ function generateHybridCampaign(product, action, budget) {
     adStrategy: {
       type: 'Search + Shopping + Display Retargeting',
       keywords: generateKeywords(product),
-      dailyBudget: Math.round(adsBudget / (action === 'LIQUIDATE' ? 10 : 14)),
+      dailyBudget: Math.round((budget * 0.4) / (action === 'LIQUIDATE' ? 10 : 14)),
     },
     timeline: [
       { name: 'Launch Influencers', description: 'Influencer content goes live', duration: 'Day 1-3' },
@@ -763,7 +1004,6 @@ function generateKeywords(product) {
 }
 
 function findRelevantTrends(product) {
-  // Mock trending topics that match product
   const trendMap = {
     protein: ['Protein Ice Cream', 'Anabolic Recipes', 'Macro Tracking'],
     preWorkout: ['Morning Routine', 'Hyrox Training', 'Competition Prep'],
