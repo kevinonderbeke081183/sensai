@@ -1,131 +1,105 @@
-# SensAI Deployment Guide
+# 🚀 Deploying SensAI to Netlify
 
-Deploy SensAI to showcase the demand orchestration platform to prospects.
+## Option 1: Drag & Drop (Easiest - 2 minutes)
 
-## Quick Deploy Options
+1. Go to https://app.netlify.com/drop
+2. Drag the entire `dist` folder from this project
+3. Netlify will give you a live URL instantly!
+4. URL will look like: `https://random-name-12345.netlify.app`
 
-### Option 1: Vercel (Recommended - Free)
+**To access the prototypes:**
+- Landing page: `https://your-site.netlify.app/`
+- Trends prototype: `https://your-site.netlify.app/?app=trends`
+- Inventory prototype: `https://your-site.netlify.app/?app=inventory`
 
-1. **Via CLI:**
-   ```bash
-   cd apps/signal-intelligence
-   npm install
-   npx vercel
-   ```
-   Follow the prompts. Your site will be live at `your-project.vercel.app`
+---
 
-2. **Via GitHub:**
-   - Push this folder to a GitHub repo
-   - Go to [vercel.com](https://vercel.com)
-   - Click "New Project" → Import your repo
-   - Set Root Directory to `apps/signal-intelligence`
-   - Deploy!
+## Option 2: Connect to GitHub (Best for ongoing updates)
 
-### Option 2: Netlify (Free)
+1. Go to https://app.netlify.com
+2. Click "Add new site" → "Import an existing project"
+3. Choose "GitHub" and authorize
+4. Select repository: `kevinonderbeke081183/sensai`
+5. Choose branch: `claude/audit-sensai-features-qmx6s`
+6. Build settings (should auto-detect):
+   - Build command: `npm run build`
+   - Publish directory: `dist`
+7. Click "Deploy site"
 
-1. **Via Drag & Drop:**
-   ```bash
-   cd apps/signal-intelligence
-   npm install
-   npm run build
-   ```
-   Then drag the `dist` folder to [netlify.com/drop](https://app.netlify.com/drop)
+**Every time you push to the branch, it will auto-deploy!**
 
-2. **Via CLI:**
-   ```bash
-   npm install -g netlify-cli
-   cd apps/signal-intelligence
-   npm run build
-   netlify deploy --prod --dir=dist
-   ```
+---
 
-3. **Via GitHub:**
-   - Push to GitHub
-   - Connect repo in Netlify dashboard
-   - Set build command: `npm run build`
-   - Set publish directory: `dist`
-   - Set base directory: `apps/signal-intelligence`
+## Option 3: CLI Deploy (From this terminal)
 
-### Option 3: GitHub Pages (Free)
-
-1. Create a new repo for the landing page
-2. Build and copy dist contents:
-   ```bash
-   cd apps/signal-intelligence
-   npm install
-   npm run build
-   ```
-3. Copy contents of `dist` folder to the new repo
-4. Enable GitHub Pages in repo settings
-
-### Option 4: Any Static Host
-
-The `dist` folder after build is completely static. Upload to:
-- AWS S3 + CloudFront
-- Google Cloud Storage
-- Azure Static Web Apps
-- Cloudflare Pages
-- Render
-- Railway
-
-## Custom Domain
-
-After deploying, you can add a custom domain like `sensai.io` or `getsensai.com`:
-
-**Vercel:**
-- Go to Project Settings → Domains → Add domain
-
-**Netlify:**
-- Go to Site Settings → Domain Management → Add custom domain
-
-## Environment Variables (Optional)
-
-The app works in demo mode by default. No environment variables needed.
-
-If you want to connect to a live backend later:
-```
-VITE_API_URL=https://your-api.com
-```
-
-## What Gets Deployed
-
-- **Landing Page** - Converts visitors to waitlist signups
-- **Demo Dashboard** - Shows the full platform with simulated data
-- **No backend required** - Everything runs client-side
-
-## Collecting Waitlist Signups
-
-Currently, signups are logged to console. To collect them:
-
-### Option A: Netlify Forms (Easiest)
-Add to your form in LandingPage.jsx:
-```jsx
-<form name="waitlist" method="POST" data-netlify="true">
-```
-
-### Option B: External Service
-Integrate with:
-- Mailchimp
-- ConvertKit
-- Airtable
-- Google Sheets (via Zapier)
-- Your own backend
-
-## Performance
-
-The built bundle is optimized:
-- Code splitting (vendor + app chunks)
-- Minified with Terser
-- Tree-shaken dependencies
-- ~200KB total (gzipped)
-
-## Testing Locally Before Deploy
+Run these commands:
 
 ```bash
-cd apps/signal-intelligence
-npm install
-npm run build
-npm run preview
+# Login to Netlify (opens browser)
+netlify login
+
+# Deploy the site
+netlify deploy --prod --dir=dist
 ```
 
-Visit http://localhost:4173 to see the production build.
+It will ask:
+- "Create & configure a new site?" → Yes
+- "Team?" → Choose your team
+- "Site name?" → Enter: `sensai-demo` (or your preferred name)
+
+You'll get a live URL!
+
+---
+
+## 🎯 What You'll See After Deploy
+
+**Landing Page:** `https://your-site.netlify.app/`
+- Two buttons: "Trends Demo" and "Inventory Demo"
+- Waitlist form (will work via Netlify Forms)
+
+**Direct Links:**
+- Trends prototype: Add `?app=trends` to URL
+- Inventory prototype: Add `?app=inventory` to URL
+
+---
+
+## 🔄 Updating the Deployment
+
+### If using GitHub connection (Option 2):
+Just push to the branch:
+```bash
+git add .
+git commit -m "Your changes"
+git push
+```
+Netlify auto-deploys in ~30 seconds!
+
+### If using CLI (Option 3):
+```bash
+npm run build
+netlify deploy --prod --dir=dist
+```
+
+---
+
+## 📱 Testing After Deploy
+
+1. Visit your live URL
+2. Click "Trends Demo" → Should see purple banner "PROTOTYPE 1: TRENDS-FIRST"
+3. Click "Inventory Demo" → Should see green banner "PROTOTYPE 2: INVENTORY-FIRST"
+4. Share the URL with stakeholders!
+
+---
+
+## 🐛 Troubleshooting
+
+**Site not updating?**
+- Clear browser cache (Ctrl+Shift+R)
+- Check Netlify dashboard for deploy status
+
+**404 errors?**
+- The `netlify.toml` file handles this (already configured)
+
+**Waitlist form not working?**
+- Netlify Forms work automatically on Netlify hosting
+- Enable in: Site settings → Forms → Enable form detection

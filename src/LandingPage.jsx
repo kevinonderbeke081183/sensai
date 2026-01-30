@@ -194,30 +194,56 @@ export default function LandingPage({ onEnterApp }) {
           <a href="#demo" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: 14, fontWeight: 500 }}>See Demo</a>
           <a href="#waitlist" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: 14, fontWeight: 500 }}>Join Waitlist</a>
           {onEnterApp && (
-            <button
-              onClick={onEnterApp}
-              style={{
-                padding: '10px 20px',
-                background: 'rgba(16, 185, 129, 0.2)',
-                border: '1px solid rgba(16, 185, 129, 0.5)',
-                borderRadius: 8,
-                color: '#10b981',
-                fontSize: 14,
-                fontWeight: 600,
-                cursor: 'pointer',
-                transition: 'all 0.2s ease'
-              }}
-              onMouseEnter={e => {
-                e.target.style.background = 'rgba(16, 185, 129, 0.3)';
-                e.target.style.transform = 'translateY(-2px)';
-              }}
-              onMouseLeave={e => {
-                e.target.style.background = 'rgba(16, 185, 129, 0.2)';
-                e.target.style.transform = 'translateY(0)';
-              }}
-            >
-              Enter Platform
-            </button>
+            <>
+              <button
+                onClick={() => onEnterApp('trends')}
+                style={{
+                  padding: '10px 20px',
+                  background: 'rgba(99, 102, 241, 0.2)',
+                  border: '1px solid rgba(99, 102, 241, 0.5)',
+                  borderRadius: 8,
+                  color: '#6366f1',
+                  fontSize: 14,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease'
+                }}
+                onMouseEnter={e => {
+                  e.target.style.background = 'rgba(99, 102, 241, 0.3)';
+                  e.target.style.transform = 'translateY(-2px)';
+                }}
+                onMouseLeave={e => {
+                  e.target.style.background = 'rgba(99, 102, 241, 0.2)';
+                  e.target.style.transform = 'translateY(0)';
+                }}
+              >
+                Trends Demo
+              </button>
+              <button
+                onClick={() => onEnterApp('inventory')}
+                style={{
+                  padding: '10px 20px',
+                  background: 'rgba(16, 185, 129, 0.2)',
+                  border: '1px solid rgba(16, 185, 129, 0.5)',
+                  borderRadius: 8,
+                  color: '#10b981',
+                  fontSize: 14,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease'
+                }}
+                onMouseEnter={e => {
+                  e.target.style.background = 'rgba(16, 185, 129, 0.3)';
+                  e.target.style.transform = 'translateY(-2px)';
+                }}
+                onMouseLeave={e => {
+                  e.target.style.background = 'rgba(16, 185, 129, 0.2)';
+                  e.target.style.transform = 'translateY(0)';
+                }}
+              >
+                Inventory Demo
+              </button>
+            </>
           )}
         </div>
       </nav>

@@ -600,6 +600,18 @@ function App({ onBackToLanding }) {
       color: theme.text.primary,
       fontFamily: "'Inter', -apple-system, sans-serif",
     }}>
+      {/* PROTOTYPE INDICATOR */}
+      <div style={{
+        background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+        color: '#fff',
+        padding: '12px 24px',
+        textAlign: 'center',
+        fontWeight: 'bold',
+        fontSize: '18px',
+        boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+      }}>
+        📊 PROTOTYPE 1: TRENDS-FIRST APPROACH 📈
+      </div>
       {/* Header */}
       <Header
         isLive={isLive}
